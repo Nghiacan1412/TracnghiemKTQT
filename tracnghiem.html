@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Trắc nghiệm Kế toán Quốc tế</title>
+    <style>
+      /* Tổng thể */
+      body {
+        font-family: "Roboto", Arial, sans-serif;
+        background-color: #f4f7f8;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      /* Container chính */
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Tiêu đề */
+      h1 {
+        text-align: center;
+        color: #0e7b27; /* Màu xanh đậm */
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      /* Câu hỏi */
+      .question {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        border-left: 5px solid #0e7b27; /* Màu xanh kế toán */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .question h3 {
+        font-size: 18px;
+        font-weight: bold;
+        color: #0e7b27; /* Màu xanh đậm */
+        margin-bottom: 15px;
+        text-align: justify;
+      }
+
+      /* Đáp án */
+      .options label {
+        display: block;
+        margin-bottom: 10px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .options label:hover {
+        background-color: #e6f7ff; /* Màu xanh nhạt khi hover */
+        transform: scale(1.02); /* Phóng to nhẹ khi hover */
+      }
+
+      .options input[type="radio"] {
+        margin-right: 10px;
+        accent-color: #0e7b27; /* Màu xanh cho radio button */
+        transform: scale(1.2); /* Tăng kích thước */
+      }
+
+      /* Đáp án đúng */
+      .correct {
+        background-color: #d4edda !important;
+        color: #155724;
+        border-left: 5px solid #28a745;
+        padding-left: 10px;
+        animation: highlightCorrect 0.5s ease-in-out;
+      }
+
+      @keyframes highlightCorrect {
+        from {
+          background-color: #c3e6cb;
+          transform: scale(1.05);
+        }
+        to {
+          background-color: #d4edda;
+          transform: scale(1);
+        }
+      }
+
+      /* Đáp án sai */
+      .incorrect {
+        background-color: #f8d7da !important;
+        color: #721c24;
+        border-left: 5px solid #dc3545;
+        padding-left: 10px;
+        animation: highlightIncorrect 0.5s ease-in-out;
+      }
+
+      @keyframes highlightIncorrect {
+        from {
+          background-color: #f5c6cb;
+          transform: scale(1.05);
+        }
+        to {
+          background-color: #f8d7da;
+          transform: scale(1);
+        }
+      }
+
+      /* Hiển thị đáp án đúng */
+      .correct-answer {
+        font-style: italic;
+        color: #28a745;
+        margin-top: 5px;
+      }
+
+      /* Nút bấm */
+      #startBtn,
+      #submitBtn {
+        display: block;
+        margin: 20px auto;
+        padding: 12px 24px;
+        font-size: 16px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      #startBtn:hover,
+      #submitBtn:hover {
+        background-color: #28a745; /* Màu xanh đậm hơn khi hover */
+        transform: scale(1.05); /* Phóng to nhẹ khi hover */
+      }
+
+      #submitBtn {
+        display: none;
+        background-color: #28a745;
+      }
+
+      /* Điểm số */
+      #score {
+        text-align: center;
+        font-weight: bold;
+        font-size: 22px;
+        color: #28a745;
+        margin-top: 20px;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Thanh tiến trình */
+      #progressBar {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        overflow: hidden;
+        margin: 20px 0;
+      }
+
+      #progress {
+        width: 0%;
+        height: 10px;
+        background-color: #28a745;
+        transition: width 0.3s ease;
+      }
+
+      /* Bộ đếm thời gian */
+      #timer {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #dc3545;
+        margin-top: 20px;
+      }
+
+      /* Chế độ tối */
+      body.dark-mode {
+        background-color: #2c2c2c;
+        color: #f4f4f4;
+      }
+
+      body.dark-mode .container {
+        background-color: #3c3c3c;
+      }
+
+      body.dark-mode .question {
+        background-color: #444;
+      }
+
+      body.dark-mode .options label:hover {
+        background-color: #555;
+      }
+
+      body.dark-mode #progress {
+        background-color: #28a745;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Trắc nghiệm Kế toán Quốc tế</h1>
+      <button id="startBtn">🎯 Bắt đầu làm bài</button>
+      <form id="quizForm"></form>
+      <button id="submitBtn">📤 Nộp bài</button>
+      <div id="score"></div>
+    </div>
+
+    <script>
+      const allQuestions = [
+        {
+          question:
+            "Dùng tiền mặt để thanh toán chi phí thuê mướn trang thiết bị trong tháng là $ 1.200 và trả lương nhân viên trong tháng là $ 500. Kế toán ghi nhận nghiệp vụ như sau:",
+          options: [
+            "Nợ Chi phí thuê thiết bị 1.000 Nợ Tiền 400 Có Tiền lương 1.400",
+            "Nợ Chi phí thuê thiết bị 400 Nợ Chi phí Tiền Lương 1.000 Có Tiền 1.400",
+            "Nợ Tiền 1.000 Nợ Chi phí Tiền Lương 400 Có Tiền thuê thiết bị 1.400",
+            "Nợ Chi phí thuê thiết bị 1.200 Nợ Chi phí Tiền Lương 500 Có Tiền 1.700",
+          ],
+          correct:
+            "Nợ Chi phí thuê thiết bị 1.200 Nợ Chi phí Tiền Lương 500 Có Tiền 1.700",
+        },
+        {
+          question:
+            "Nhận được hóa đơn chi phí điện nước đã sử dụng trong tháng nhưng chưa thanh toán là $ 500. Kế toán ghi nhận nghiệp vụ như sau:",
+          options: [
+            "Nợ Tiền 300 Có Chi phí điện nước 300",
+            "Nợ Chi phí điện nước 500 Có Phải trả người bán 500",
+            "Nợ Phải trả người bán 300 Có Chi phí điện nước 300",
+            "Nợ Chi phí điện nước 500 Có Tiền 500",
+          ],
+          correct: "Nợ Chi phí điện nước 500 Có Phải trả người bán 500",
+        },
+        {
+          question:
+            "Ông An thành lập doanh nghiệp với thiết bị trị giá 3.000 và ký quỹ vào doanh nghiệp 8.000",
+          options: [
+            "Nợ Tiền 7.000 Nợ Thiết bị 1.000 Có Ký quỹ 8.000",
+            "Nợ Ký quỹ 7.000 Nợ Thiết bị 1.000 Có Vốn chủ sở hữu 8.000",
+            "Nợ Thiết bị 3.000 Nợ Tiền 8.000 Có Vốn chủ sở hữu 11.000",
+            "Nợ Tiền 1.000 Nợ Thiết bị 7.000 Có Vốn chủ sở hữu 8.000",
+          ],
+          correct: "Nợ Thiết bị 3.000 Nợ Tiền 8.000 Có Vốn chủ sở hữu 11.000",
+        },
+        {
+          question:
+            "Điều khoản 2/10, n/30 được hiểu là người bán đang bán chịu cho người mua một lô hàng, người mua được phép nợ tiền hàng tối đa là bao nhiêu ngày?",
+          options: ["40 ngày", "20 ngày", "30 ngày", "50 ngày"],
+          correct: "30 ngày",
+        },
+        {
+          question:
+            "Công ty Fenwick có bán một lô hàng cho khách hàng trị giá $8.000 với điều khoản thanh toán 4/15, n/40 vào ngày 07/03. Sau đó, ngày 08/03 công ty nhận được $500 tiền hàng hóa do khách hàng trả lại vì lỗi kỹ thuật sản phẩm. Ngày 20/03 công ty nhận được thanh toán 40% của khách hàng. Ngày 27/03 khách hàng đã thanh toán hết phần còn lại. (Biết rằng công ty áp dụng hệ thống kiểm kê định kỳ) Bút toán nhật ký tại ngày 27/03 được ghi:",
+          options: [
+            "Nợ Tiền mặt: 4.320 Nợ Chiết khấu bán hàng: 180 Có Khoản phải thu: 4.500",
+            "Nợ Khoản phải thu: 4.500 Có Doanh thu bán hàng: 4.500",
+            "Nợ Khoản phải thu: 4.320 Nợ Chiết khấu bán hàng: 180 Có Doanh thu bán hàng: 4.500",
+            "Nợ Tiền mặt: 4.500 Có Khoản phải thu: 4.500",
+          ],
+          correct: "Nợ Tiền mặt: 4.500 Có Khoản phải thu: 4.500",
+        },
+        {
+          question:
+            "Tại công ty Spring Co có nghiệp vụ phát sinh “Cổ đông góp vốn bằng tiền gửi ngân hàng là $200.000”. Kế toán ghi:",
+          options: [
+            "Nợ TK Góp vốn: $200.000 Có TK Vốn chủ sở hữu: $200.000",
+            "Nợ TK Tiền gửi ngân hàng: $200.000 Có TK Góp vốn: $200.000",
+            "Nợ TK Tiền mặt: $200.000 Có TK Vốn chủ sở hữu: $200.000",
+            "Nợ TK Tiền gửi ngân hàng: $200.000 Có TK Vốn chủ sở hữu: $200.000",
+          ],
+          correct:
+            "Nợ TK Tiền gửi ngân hàng: $200.000 Có TK Vốn chủ sở hữu: $200.000",
+        },
+        {
+          question:
+            "Công ty Fenwick có bán một lô hàng cho khách hàng trị giá $8.000 với điều khoản thanh toán 4/15, n/40 vào ngày 07/03. Sau đó, ngày 08/03 công ty nhận được $500 tiền hàng hóa do khách hàng trả lại vì lỗi kỹ thuật sản phẩm. Ngày 20/03 công ty nhận được thanh toán 40% của khách hàng. Ngày 27/03 khách hàng đã thanh toán hết phần còn lại. (Biết rằng công ty áp dụng hệ thống kiểm kê định kỳ) Bút toán nhật ký tại ngày 07/03 được ghi:",
+          options: [
+            "Nợ Doanh thu bán hàng: 8.000 Có Khoản phải thu: 8.000",
+            "Nợ Khoản phải thu: 8.000 Có Doanh thu bán hàng: 8.000",
+            "Nợ Tiền mặt: 8.000 Có Doanh thu bán hàng: 8.000",
+            "Nợ Doanh thu bán hàng: 8.000 Có Doanh thu nhận trước: 8.000",
+          ],
+          correct: "Nợ Khoản phải thu: 8.000 Có Doanh thu bán hàng: 8.000",
+        },
+        {
+          question: "Vốn cổ phần bị ảnh hưởng bởi:",
+          options: [
+            "Trả nợ phải trả",
+            "Thu nợ phải thu",
+            "Trả cổ tức",
+            "Mua tài sản",
+          ],
+          correct: "Trả cổ tức",
+        },
+        {
+          question:
+            "Theo kế toán quốc tế, báo cáo nào sau đây liên quan đến một thời điểm nhất định?",
+          options: [
+            "Báo cáo vốn chủ sở hữu",
+            "Báo cáo lưu chuyển tiền tệ",
+            "Báo cáo thu nhập",
+            "Bảng cân đối kế toán",
+          ],
+          correct: "Bảng cân đối kế toán",
+        },
+        {
+          question: "Vấn đề ghi nhận:",
+          options: [
+            "Ghi chép nghiệp vụ ở đâu",
+            "Xác định thước đo giá trị cho nghiệp vụ",
+            "Ghi chép nghiệp vụ khi nào",
+            "Phân loại nghiệp vụ như thế nào",
+          ],
+          correct: "Ghi chép nghiệp vụ khi nào",
+        },
+        {
+          question: "Tài khoản nào là tài khoản tài sản:",
+          options: [
+            "Bảo hiểm trả trước",
+            "Bảo hiểm phải trả",
+            "Doanh thu nhận trước",
+            "Chi phí bảo hiểm",
+          ],
+          correct: "Bảo hiểm trả trước",
+        },
+        {
+          question:
+            "Một công ty thuê văn phòng làm việc sẽ không bao giờ lập bút toán có tài khoản nào cho việc thuê đó?",
+          options: [
+            "Tiền thuê trả trước",
+            "Tiền thuê phải trả",
+            "Chi phí tiền thuê",
+            "Tiền thuê nhận trước",
+          ],
+          correct: "Tiền thuê nhận trước",
+        },
+        {
+          question:
+            "Nội dung nào sau đây sẽ không làm mất cân bằng trên bảng cân đối thử?",
+          options: [
+            "Sai sót khi mang số dư từ tài khoản lên bảng cân đối thử",
+            "Số dư của một tài khoản bị tính sai",
+            "Một khoản bên nợ của Chi phí tiện ích lại chuyển vào bên nợ tài khoản Chi phí tiền thuê",
+            "Một tài khoản có số dư bên nợ lại ghi sang bên có của bảng cân đối thử hoặc ngược lại",
+          ],
+          correct:
+            "Một khoản bên nợ của Chi phí tiện ích lại chuyển vào bên nợ tài khoản Chi phí tiền thuê",
+        },
+        {
+          question:
+            "Giá vốn của hàng hóa và dịch vụ được sử dụng vào quá trình tạo doanh thu được gọi là",
+          options: ["Nợ phải trả", "Tài sản", "Lời", "Chi phí"],
+          correct: "Chi phí",
+        },
+        {
+          question:
+            "Sự khó khăn trong quá trình xác định lợi nhuận là do các nội dung sau ngoại trừ",
+          options: [
+            "Kỳ kế toán",
+            "Vấn đề phù hợp",
+            "Ghi nhận",
+            "Hoạt động liên tục",
+          ],
+          correct: "Hoạt động liên tục",
+        },
+        {
+          question: "Ví dụ nào sau đây là khoản dồn tích",
+          options: [
+            "Khoản hoa hồng đã thu nhưng chưa được hưởng",
+            "Một khoản hoa hồng được hưởng nhưng chưa ghi chép",
+            "Ghi chép việc bán hàng thu tiền",
+            "Khấu hao tài sản",
+          ],
+          correct: "Một khoản hoa hồng được hưởng nhưng chưa ghi chép",
+        },
+        {
+          question:
+            "Bút toán điều chỉnh lập vào cuối mỗi kỳ kế toán, không áp dụng cho trường hợp nào?",
+          options: [
+            "Có khoản chi phí chưa được ghi chép",
+            "Có sai sót cần chỉnh sửa",
+            "Doanh thu đã ghi nhưng sẽ phân bổ cho hai hay nhiều kỳ kế toán",
+            "Có khoản doanh thu chưa được hưởng",
+          ],
+          correct: "Có sai sót cần chỉnh sửa",
+        },
+        {
+          question:
+            "Bỏ sót không ghi chép khấu hao vào cuối kỳ kế toán sẽ làm:",
+          options: [
+            "Tài sản bị xác định cao hơn",
+            "Nợ phải trả bị xác định cao hơn",
+            "Lãi thuần bị xác định thấp hơn",
+            "Nợ phải trả bị xác định thấp hơn",
+          ],
+          correct: "Tài sản bị xác định cao hơn",
+        },
+        {
+          question:
+            "Theo thời gian, khấu hao lũy kế và giá trị còn lại của tài sản sẽ:",
+          options: [
+            "Đều giảm dần",
+            "Giảm dần và tăng dần tương ứng",
+            "Tăng dần và giảm dần tương ứng",
+            "Đều tăng dần",
+          ],
+          correct: "Tăng dần và giảm dần tương ứng",
+        },
+        {
+          question:
+            "Trình tự lập báo cáo tài chính từ bảng cân đối đã điều chỉnh là:",
+          options: [
+            "Lợi nhuận giữ lại, Báo cáo thu nhập và Bảng cân đối kế toán",
+            "Báo cáo thu nhập, Lợi nhuận giữ lại và Bảng cân đối kế toán",
+            "Bảng cân đối kế toán, Lợi nhuận giữ lại và Báo cáo thu nhập",
+            "Báo cáo thu nhập, Bảng cân đối kế toán và Lợi nhuận giữ lại",
+          ],
+          correct:
+            "Báo cáo thu nhập, Lợi nhuận giữ lại và Bảng cân đối kế toán",
+        },
+        {
+          question:
+            "Những tài khoản nào sau đây có thể xuất hiện trên bảng cân đối đã điều chỉnh nhưng không có trên bảng cân đối thử?",
+          options: [
+            "Tiền",
+            "Khấu hao lũy kế",
+            "Lợi nhuận giữ lại",
+            "Chi phí khấu hao",
+          ],
+          correct: "Chi phí khấu hao",
+        },
+        {
+          question:
+            "Các bước công việc trong một quy trình kế toán có thể được thực hiện với sự trợ giúp của bảng nháp là:",
+          options: [
+            "Phân bổ, khóa sổ, ghi đảo",
+            "Phân tích, ghi chép, chuyển sổ",
+            "Tách biệt, vào sổ liệu, ghi chép",
+            "Điều chỉnh, lập báo cáo, khóa sổ",
+          ],
+          correct: "Điều chỉnh, lập báo cáo, khóa sổ",
+        },
+        {
+          question:
+            "Tài khoản nào sau đây không được khóa trong quá trình khóa sổ?",
+          options: [
+            "Xác định kết quả kinh doanh",
+            "Thu nhập tiền lãi",
+            "Lợi nhuận giữ lại",
+            "Chi phí tiền thuê",
+          ],
+          correct: "Lợi nhuận giữ lại",
+        },
+        {
+          question:
+            "Cột nào của bảng nháp phản ánh số tiền của các tài khoản trên bảng nháp?",
+          options: [
+            "Báo cáo thu nhập",
+            "Bảng cân đối đã điều chỉnh",
+            "Bảng cân đối kế toán",
+            "Điều chỉnh",
+          ],
+          correct: "Bảng cân đối đã điều chỉnh",
+        },
+        {
+          question:
+            "Nội dung nào sau đây không thuộc việc lập báo cáo tài chính?",
+          options: [
+            "Chúng được lập trước khi lập bảng cân đối sau khóa sổ",
+            "Số liệu có thể lấy từ bảng nháp",
+            "Chúng không cần phải được lập riêng biệt nếu có dùng bảng nháp",
+            "Số tổng cộng các cột trên bảng nháp khác với sổ tổng cộng trên các báo cáo",
+          ],
+          correct:
+            "Chúng không cần phải được lập riêng biệt nếu có dùng bảng nháp",
+        },
+        {
+          question:
+            "Nội dung nào sau đây không phải về việc lập báo cáo tài chính:",
+          options: [
+            "Số tổng các cột trên bảng nháp khác với số tổng cộng trên các báo cáo",
+            "Bảng nháp không cần lập riêng biệt",
+            "Số liệu có thể lấy từ bảng nháp",
+            "Chúng được lập trước khi lập bảng cân đối sau khóa sổ",
+          ],
+          correct: "Bảng nháp không cần lập riêng biệt",
+        },
+        {
+          question:
+            "Tại công ty Spring Co có nghiệp vụ phát sinh “Vay ngắn hạn ngân hàng $100.000 bằng tiền mặt, lãi suất 2,5%/năm”. Kế toán ghi:",
+          options: [
+            "Nợ TK Tiền mặt: $100.000 Có TK Vay ngắn hạn: $100.000",
+            "Nợ TK Tiền mặt: $100.000 Có TK Vay dài hạn: $100.000",
+            "Nợ TK Vay ngắn hạn: $100.000 Có TK Vốn chủ sở hữu: $100.000",
+            "Nợ TK Tiền mặt: $100.000 Có TK Vốn chủ sở hữu: $100.000",
+          ],
+          correct: "Nợ TK Tiền mặt: $100.000 Có TK Vay ngắn hạn: $100.000",
+        },
+        {
+          question: "Nội dung nào sau đây là về bút toán đảo?",
+          options: [
+            "Tất cả bút toán điều chỉnh đều ghi đảo",
+            "Chúng được yêu cầu lập",
+            "Bút toán điều chỉnh phân bổ sẽ được ghi đảo",
+            "Chúng ngược lại với bút toán điều chỉnh",
+          ],
+          correct: "Chúng ngược lại với bút toán điều chỉnh",
+        },
+        {
+          question: "Tên gọi khác của tài khoản thường xuyên là:",
+          options: [
+            "Tài khoản bảng cân đối tài sản",
+            "Tài khoản báo cáo lưu chuyển tiền tệ",
+            "Tài khoản báo cáo thu nhập",
+            "Tài khoản báo cáo vốn chủ sở hữu",
+          ],
+          correct: "Tài khoản báo cáo thu nhập",
+        },
+        {
+          question:
+            "Cho biết yếu tố nào trên báo cáo tài chính sẽ thể hiện thích hợp nhất trên báo cáo thu nhập?",
+          options: ["Thiết bị", "Chi phí", "Doanh thu", "Doanh thu và chi phí"],
+          correct: "Doanh thu và chi phí",
+        },
+        {
+          question:
+            "Đối tượng nào sau đây sử dụng thông tin kế toán trong việc dự kiến khả năng sinh lời và khả năng thanh toán của công ty?",
+          options: [
+            "Nhà đầu tư",
+            "Chủ nợ",
+            "Nhà quản lý",
+            "Nhà hoạch định kinh tế",
+          ],
+          correct: "Nhà quản lý",
+        },
+        {
+          question:
+            "Đặc tính của thông tin kế toán quản trị không bao gồm yếu tố nào sau đây?",
+          options: [
+            "Thông tin được kiểm toán bởi ủy ban thủ tục kế toán (CPA)",
+            "Thông tin được đo lường một cách có hiệu quả",
+            "Thông tin phải kịp thời",
+            "Thông tin định hướng cho tương lai",
+          ],
+          correct: "Thông tin được kiểm toán bởi ủy ban thủ tục kế toán (CPA)",
+        },
+        {
+          question:
+            "Hình thức kết hợp một số đặc tính của công ty cổ phần và công ty hợp doanh, ở Mỹ được gọi là:",
+          options: [
+            "Công ty hợp danh",
+            "Công ty trách nhiệm hữu hạn",
+            "Doanh nghiệp tư nhân",
+            "Công ty cổ phần",
+          ],
+          correct: "Công ty trách nhiệm hữu hạn",
+        },
+        {
+          question: "Theo kế toán quốc tế, tài khoản tạm thời:",
+          options: [
+            "Là những tài khoản mà số dư của nó sẽ bị xóa đi bằng những bút toán khóa sổ vào cuối mỗi kỳ kế toán để chuẩn bị cho việc ghi chép trong kỳ kế toán mới",
+            "Là những tài khoản liên quan đến báo cáo thu nhập",
+            "Là những tài khoản số dư cuối mỗi kỳ của nó sẽ được giữ lại làm số dư cho đầu kỳ sau",
+            "Là những tài khoản không có số dư",
+          ],
+          correct:
+            "Là những tài khoản mà số dư của nó sẽ bị xóa đi bằng những bút toán khóa sổ vào cuối mỗi kỳ kế toán để chuẩn bị cho việc ghi chép trong kỳ kế toán mới",
+        },
+        {
+          question:
+            "Theo kế toán quốc tế, tài khoản tạm thời có liên quan đến:",
+          options: [
+            "Báo cáo lưu chuyển tiền tệ",
+            "Báo cáo thu nhập",
+            "Bảng cân đối tài sản",
+            "Báo cáo vốn chủ sở hữu",
+          ],
+          correct: "Báo cáo thu nhập",
+        },
+        {
+          question: "Tài khoản nào là tài khoản trung gian (tạm thời):",
+          options: [
+            "Phải thu của khách hàng",
+            "Phải trả lương cho công nhân viên",
+            "Tiền mặt",
+            "Chi phí điện, nước",
+          ],
+          correct: "Chi phí điện, nước",
+        },
+        {
+          question: "Chi phí trả trước được ghi nhận là:",
+          options: [
+            "Tài sản",
+            "Nợ phải trả",
+            "Một khoản chi phí",
+            "Vốn chủ sở hữu",
+          ],
+          correct: "Tài sản",
+        },
+        {
+          question: "Kỳ kế toán ít hơn 1 năm gọi là:",
+          options: [
+            "Năm tài chính",
+            "Kỳ kế toán năm",
+            "Kỳ tạm thời",
+            "Năm dương lịch",
+          ],
+          correct: "Kỳ tạm thời",
+        },
+        {
+          question: "Theo vấn đề phù hợp, vấn đề nào sau đây đúng:",
+          options: [
+            "Chi phí được tính vào kỳ kế toán mà chúng được dùng để tạo ra doanh thu kỳ trước",
+            "Doanh thu được tính vào kỳ kế toán là kỳ thu được tiền",
+            "Doanh thu được tính vào kỳ kế toán hàng đã bán được hay dịch vụ đã thực hiện chứ không phải là kỳ thu được tiền",
+            "Chi phí được tính vào kỳ kế toán là kỳ chi tiền ra",
+          ],
+          correct:
+            "Doanh thu được tính vào kỳ kế toán hàng đã bán được hay dịch vụ đã thực hiện chứ không phải là kỳ thu được tiền",
+        },
+        {
+          question: "Câu nào sau đây đúng với kế toán trên cơ sở tiền:",
+          options: [
+            "Ghi nhận doanh thu khi nhận được tiền và chi phí khi chi tiền",
+            "Ghi nhận doanh thu khi khách hàng chấp nhận thanh toán",
+            "Ghi chép những ảnh hưởng của các nghiệp vụ và những sự kiện khác đến tình hình tài chính ở một doanh nghiệp trong kỳ mà chúng phát sinh hơn là ở trong kỳ mà mà doanh nghiệp đó thu hay chi tiền",
+            "Ghi nhận chi phí khi mua nợ hàng của nhà cung cấp",
+          ],
+          correct:
+            "Ghi nhận doanh thu khi nhận được tiền và chi phí khi chi tiền",
+        },
+        {
+          question: "Mục đích của bút toán khóa sổ là:",
+          options: [
+            "Tổng hợp doanh thu và chi phí trong kỳ bằng cách sử dụng tài khoản Xác định kết quả kinh doanh",
+            "Làm cho số dư của các tài khoản thuộc bảng cân đối kế toán bằng 0",
+            "Làm cho số dư của các tài khoản trên bảng cân đối thử bằng 0",
+            "Chuyển hết số dư của các tài khoản Doanh thu, chi phí và Cổ tức hay Rút vốn (của các tài khoản tạm thời)",
+          ],
+          correct:
+            "Chuyển hết số dư của các tài khoản Doanh thu, chi phí và Cổ tức hay Rút vốn (của các tài khoản tạm thời)",
+        },
+        {
+          question: "Chênh lệch giữa tổng doanh thu và doanh thu thuần là:",
+          options: [
+            "Chiết khấu bán hàng",
+            "Hàng bán bị trả lại và giảm giá",
+            "Chênh lệch giữa chiết khấu bán hàng với hàng bán bị trả lại và giảm giá",
+            "Tổng chiết khấu bán hàng, hàng bán bị trả lại và giảm giá",
+          ],
+          correct: "Tổng chiết khấu bán hàng, hàng bán bị trả lại và giảm giá",
+        },
+        {
+          question:
+            "Công ty lập dự phòng các khoản nợ phải thu khó đòi hàng năm là tuân thủ nguyên tắc kế toán nào sau đây?",
+          options: ["Thông tin đầy đủ", "Trọng yếu", "Thận trọng", "Phù hợp"],
+          correct: "Thận trọng",
+        },
+        {
+          question:
+            "Các nghiệp vụ nào sau đây không ảnh hưởng đến vốn chủ sở hữu?",
+          options: [
+            "Doanh thu của doanh nghiệp",
+            "Đầu tư vốn của chủ sở hữu",
+            "Thu nợ của khách hàng bằng tiền",
+            "Chi phí của doanh nghiệp",
+          ],
+          correct: "Thu nợ của khách hàng bằng tiền",
+        },
+        {
+          question:
+            "Giả sử đầu năm, tổng tài sản của công ty Univer Company là 800.000 USD và tổng nợ phải trả là 500.000 USD. Nếu tổng tài sản không đổi, nguồn vốn chủ sở hữu tăng lên 100.000 USD thì tổng nguồn vốn cuối năm là:",
+          options: ["500.000", "600.000", "200.000", "800.000"],
+          correct: "800.000",
+        },
+        {
+          question:
+            "Nếu cổ đông không đầu tư vào doanh nghiệp nhưng chia cổ tức trong năm là 36.000.000 thì lãi/ lỗ thuần của công ty là bao nhiêu?",
+          options: ["51.000.000", "6.000.000", "15.000.000", "(9.000.000)"],
+          correct: "51.000.000",
+        },
+        {
+          question:
+            "Nếu cổ đông đầu tư vào doanh nghiệp 30.000.000 và chia cổ tức 9.000.000 trong năm thì lãi/ lỗ thuần của công ty là bao nhiêu?",
+          options: ["51.000.000", "(6.000.000)", "6.000.000", "15.000.000"],
+          correct: "6.000.000",
+        },
+        {
+          question: "Phát biểu nào dưới đây không đúng:",
+          options: [
+            "Kế toán chỉ liên quan đến một tổ chức",
+            "Kế toán hữu ích trong việc thực hiện ra quyết định",
+            "Kế toán được sử dụng bởi doanh nghiệp, chính phủ, tổ chức phi lợi nhuận và các cá nhân",
+            "Kế toán là ngôn ngữ của kinh doanh",
+          ],
+          correct: "Kế toán chỉ liên quan đến một tổ chức",
+        },
+        {
+          question:
+            "Lexel Company bán số hàng trị giá $1.000, điều kiện 2/10, n/30. Lexel nhận bao nhiêu nếu khoản nợ được trả trong kỳ chiết khấu?",
+          options: ["$980", "$1.000", "$882", "$900"],
+          correct: "$980",
+        },
+        {
+          question:
+            "Ngày 1/4/2014 mua chịu số hàng trị giá $855. Ngày 19/4/2014 trả lại số hàng hư hỏng trị giá $325. Giả sử đơn vị sử dụng hệ thống kê khai thường xuyên, bút toán ghi chép hàng mua trả lại là:",
+          options: [
+            "Nợ Khoản phải trả $325 Có Hàng tồn kho $325",
+            "Nợ Khoản phải trả $325 Có Hàng mua trả lại $325",
+            "Nợ Hàng tồn kho $325 Có Khoản phải trả $325",
+            "Nợ Hàng mua trả lại $325 Có Khoản phải trả $325",
+          ],
+          correct: "Nợ Khoản phải trả $325 Có Hàng tồn kho $325",
+        },
+        {
+          question:
+            "Dễ dàng nhất để xác định hàng tồn kho bị mất, kế toán nên sử dụng hệ thống nào?",
+          options: [
+            "Hệ thống kê khai thường xuyên",
+            "Hệ thống kiểm kê định kỳ",
+            "Cả 2 hệ thống",
+            "Không có hệ thống nào trong hai hệ thống trên",
+          ],
+          correct: "Hệ thống kê khai thường xuyên",
+        },
+        {
+          question:
+            "Theo hệ thống kê khai thường xuyên, bút toán bán chịu được ghi thế nào là đúng?",
+          options: [
+            "Nợ Khoản phải thu Có Doanh thu bán hàng",
+            "Nợ Hàng tồn kho Có Giá vốn hàng bán",
+            "Nợ Doanh thu bán hàng Có Khoản phải thu",
+            "Nợ Doanh thu bán hàng Có Tiền mặt",
+          ],
+          correct: "Nợ Khoản phải thu Có Doanh thu bán hàng",
+        },
+        {
+          question:
+            "Khoản chi phí vận chuyển hàng mua xuất hiện trong báo cáo thu nhập như là:",
+          options: [
+            "Một thành phần của giá vốn hàng bán",
+            "Chi phí bán hàng",
+            "Một thành phần của doanh thu thuần",
+            "Chi phí quản lý",
+          ],
+          correct: "Một thành phần của giá vốn hàng bán",
+        },
+        {
+          question:
+            "Theo hệ thống tồn kho định kỳ, bút toán ghi hàng mua chịu trả lại là:",
+          options: [
+            "Nợ Khoản phải trả Có Hàng mua trả lại",
+            "Nợ Khoản phải trả Có Hàng mua",
+            "Nợ Hàng mua Có Khoản phải trả",
+            "Nợ Hàng tồn kho Có Khoản phải trả",
+          ],
+          correct: "Nợ Khoản phải trả Có Hàng mua trả lại",
+        },
+        {
+          question:
+            "Tài khoản nào sau đây chỉ xuất hiện theo phương pháp giá thuần khi ghi nhận việc mua hàng:",
+          options: [
+            "Chiết khấu mua hàng bị mất",
+            "Hàng mua trả lại và giảm giá",
+            "Hàng mua",
+            "Chiết khấu mua hàng",
+          ],
+          correct: "Chiết khấu mua hàng bị mất",
+        },
+        {
+          question:
+            "Hàng tồn đầy kỳ $12,000, cuối kỳ $14,000. Số dư hàng tồn kho vào cuối kỳ là bao nhiêu trước và sau khi có bút toán điều chỉnh cùng với bút toán khóa sổ:",
+          options: [
+            "$12,000 và $14,000",
+            "$14,000 và $12,000",
+            "$14,000 và $14,000",
+            "$12,000 và $12,000",
+          ],
+          correct: "$12,000 và $14,000",
+        },
+        {
+          question:
+            "Bút toán khóa sổ trong công ty thương mại sẽ được ghi vào bên Nợ của Tài khoản:",
+          options: [
+            "Chiết khấu mua hàng",
+            "Chi phí vận chuyển hàng mua",
+            "Hàng mua",
+            "Chiết khấu bán hàng",
+          ],
+          correct: "Chiết khấu mua hàng",
+        },
+        {
+          question: "Giá trị của hàng chờ bán được tính bằng cách cộng:",
+          options: [
+            "Hàng tồn kho đầu kỳ mua vào giá vốn của hàng được mua",
+            "Hàng tồn kho đầu kỳ mua vào trị giá hàng mua và chi phí vận chuyển hàng mua",
+            "Hàng tồn kho đầy kỳ mua vào hàng mua thuần",
+            "Chi phí vận chuyển hàng mua vào hàng mua thuần",
+          ],
+          correct: "Hàng tồn kho đầu kỳ mua vào giá vốn của hàng được mua",
+        },
+        {
+          question:
+            "Tài khoản nào sau đây được xem như một khoản chi phí hoạt động trong công ty thương mại:",
+          options: [
+            "Chi phí vận chuyển hàng bán",
+            "Chi phí vận chuyển hàng mua",
+            "Hàng bán trả lại và giảm giá",
+            "Hàng mua trả lại và giảm giá",
+          ],
+          correct: "Chi phí vận chuyển hàng bán",
+        },
+        {
+          question:
+            "Doanh thu bán hàng là $39,000 giá vốn hàng bán là $24,000, chi phí hoạt động là $9,000 cho năm tài chính kết thúc là ngày 31/12. Lãi gộp là:",
+          options: ["$15,000", "$30,000", "$6,000", "$63,000"],
+          correct: "$15,000",
+        },
+        {
+          question:
+            "Số dư đầu kỳ của tài khoản Hàng tồn kho là $30,000. Trong kỳ công ty mua thêm $140,000 và chi phí vận chuyển hàng mua là $10,000. Hàng tồn kho cuối kỳ là $20,000. Giá vốn của hàng đã bán:",
+          options: ["$160,000", "$164,000", "$156,000", "$184,000"],
+          correct: "$160,000",
+        },
+        {
+          question:
+            "Vào đầu kỳ, công ty Shena có trị giá hàng tồn kho là $400,000. Trong năm công ty mua thêm $1,600,000 hàng hóa. Nếu như hàng tồn kho cuối kỳ của công ty là $600,000 và doanh thu là $2,000,000 thì giá vốn hàng bán và tỷ lệ lãi gộp sẽ là:",
+          options: [
+            "$1,400,000 and 30%",
+            "$1,000,000 and 50%",
+            "$1,000,000 and 30%",
+            "$1,400,000 and 70%",
+          ],
+          correct: "$1,400,000 and 30%",
+        },
+        {
+          question:
+            "Trong tháng 08, công ty Bunica có doanh thu là $30,000. Các chi phí của công ty là: giá vốn hàng bán là $12,000 và chi phí hoạt động là $2,000. Công ty cũng có một khoản doanh thu từ việc cho thuê là $500 và khoản thu nhập từ việc bán xe tải là $1,000. Thu nhập không phải từ hoạt động kinh doanh trong tháng là:",
+          options: ["$1,500", "$1,000", "$500", "$0"],
+          correct: "$1,500",
+        },
+        {
+          question:
+            "Công ty bán một số hàng hóa thu bằng tiền trong tháng 7 là $38,000. Tổng số hàng nhận trả lại là $800. Nếu tỷ lệ lãi gộp của công ty là 40% thì doanh thu thuần và giá vốn hàng bán trong kỳ sẽ là:",
+          options: [
+            "$637,200 and $22,320",
+            "$838,000 and $22,320",
+            "$37,200 and $14,880",
+            "$838,000 and $22,800",
+          ],
+          correct: "$637,200 and $22,320",
+        },
+        {
+          question:
+            "Tất cả tài khoản sau đây đều là tài khoản điều chỉnh, ngoại trừ:",
+          options: [
+            "Doanh thu bán hàng",
+            "Giảm giá hàng bán",
+            "Hàng bán bị trả lại",
+            "Chiết khấu hàng bán",
+          ],
+          correct: "Doanh thu bán hàng",
+        },
+        {
+          question:
+            "Khi mua hàng thì kế toán có hai phương pháp ghi chép, đó là:",
+          options: [
+            "Giá gộp và giá thuần",
+            "Giá gộp và giá bán lẻ",
+            "Thường xuyên và định kỳ",
+            "Giá gộp, giá thuần, thường xuyên, định kỳ",
+          ],
+          correct: "Giá gộp và giá thuần",
+        },
+        {
+          question:
+            "Công ty Sam bán $1,500 giá trị hàng cho công ty Kear điều kiện là 2/9, n/30. Công ty Kear đã trả lại $300 do hàng bị hỏng cùng với việc thanh toán công nợ trong thời hạn hưởng chiết khấu, số tiền nhận được sẽ là:",
+          options: ["$1,176", "$1,200", "$1,476", "$1,470"],
+          correct: "$1,176",
+        },
+        {
+          question:
+            "Doanh thu bán hàng trừ đi giá vốn hàng bán sẽ được gọi là:",
+          options: ["Lãi gộp", "Thu nhập gộp", "Thu nhập thuần", "Lãi thuần"],
+          correct: "Lãi gộp",
+        },
+        {
+          question:
+            "Tài khoản nào sau đây không xuất hiện trong cả hệ thống kê khai thường xuyên lẫn hệ thống kiểm kê định kỳ?",
+          options: [
+            "Chiết khấu thương mại",
+            "Chiết khấu mua hàng bị mất",
+            "Hàng mua trả lại và giảm giá",
+            "Chiết khấu bị mất",
+          ],
+          correct: "Chiết khấu thương mại",
+        },
+        {
+          question:
+            "Trong hệ thống tồn kho thường xuyên, tài khoản Hàng tồn kho đều xuất hiện trong các bút toán ghi chép các nghiệp vụ dưới đây, ngoại trừ:",
+          options: [
+            "Trả chi phí vận chuyển hàng mua",
+            "Hàng mua trả lại và giảm giá",
+            "Mua hàng chưa thanh toán",
+            "Không có câu nào",
+          ],
+          correct: "Không có câu nào",
+        },
+        {
+          question:
+            "Khoản nào sau đây sẽ được chỉ vào tài khoản Hàng tồn kho khi ghi chép bút toán trong hệ thống tồn kho thường xuyên?",
+          options: [
+            "Người mua xin giảm giá",
+            "Chi phí mua hàng hóa",
+            "Khoản chiết khấu trả cho người mua",
+            "Được ghi vào tài khoản Hàng tồn kho",
+          ],
+          correct: "Người mua xin giảm giá",
+        },
+        {
+          question:
+            "Bút toán Nợ TK Xác định kết quả kinh doanh và Có TK Chiết khấu bán hàng là bút toán khóa sổ loại mấy?",
+          options: ["Loại 2", "Loại 1", "Loại 3", "Loại 4"],
+          correct: "Loại 2",
+        },
+        {
+          question:
+            "Khi nghiên cứu kế toán công ty thương mại thì báo cáo tài chính nào sẽ nghiên cứu trước tiên?",
+          options: [
+            "Báo cáo thu nhập",
+            "Bảng cân đối kế toán",
+            "Báo cáo thay đổi vốn chủ sở hữu",
+            "Tùy công ty cụ thể",
+          ],
+          correct: "Báo cáo thu nhập",
+        },
+        {
+          question:
+            "Tài khoản nào sau đây không có trong hệ thống tồn kho định kỳ:",
+          options: [
+            "Không có câu nào đúng",
+            "Chiết khấu mua hàng bị mất",
+            "Hàng bán trả lại và giảm giá",
+            "Hàng mua trả lại và giảm giá",
+          ],
+          correct: "Không có câu nào đúng",
+        },
+        {
+          question: "Hàng tồn kho được xem như là một tài sản lưu động vì:",
+          options: [
+            "Có thể chuyển đổi thành tiền tương đối dễ dàng trong quá trình kinh doanh",
+            "Thường phản ảnh xu hướng trong ngắn hạn doanh nghiệp",
+            "Luôn được mua trong năm hiện hành",
+            "Có thể trả lại cho nhà cung cấp để thu hồi tiền",
+          ],
+          correct:
+            "Có thể chuyển đổi thành tiền tương đối dễ dàng trong quá trình kinh doanh",
+        },
+        {
+          question:
+            "Báo cáo thu nhập của một công ty cho thấy giá trị lãi gộp ở mức cao. Điều này có nghĩa là:",
+          options: [
+            "Công ty bán hàng có giá bán cao hơn nhiều so với giá vốn",
+            "Công ty hầu hết là bán hàng thu bằng tiền mặt",
+            "Công ty sử dụng hệ thống tồn kho thường xuyên",
+            "Công ty có lợi nhuận",
+          ],
+          correct: "Công ty bán hàng có giá bán cao hơn nhiều so với giá vốn",
+        },
+        {
+          question:
+            "Công ty phát hiện có một số hàng đã mua bị hỏng và tiến hành trả lại cho nhà cung cấp. Bút toán nhật ký ghi chép sẽ làm giảm:",
+          options: [
+            "Hàng tồn kho và nợ phải trả",
+            "Doanh thu và giá vốn hàng bán",
+            "Doanh thu và nợ phải trả",
+            "Hàng tồn kho và giá vốn hàng bán",
+          ],
+          correct: "Hàng tồn kho và nợ phải trả",
+        },
+        {
+          question:
+            "Điều khoản thanh toán nào sau đây sẽ có lợi hơn cho người mua?",
+          options: ["5/15, 1/40", "5/10, n/20", "1/5, 1/40", "2/10, n/30"],
+          correct: "5/15, 1/40",
+        },
+        {
+          question:
+            "Del Sol Company sử dụng hệ thống kê khai thường xuyên, mua chịu số hàng trị giá $5.000. Bút toán ghi chép nghiệp vụ là:",
+          options: [
+            "Nợ Hàng tồn kho $5.000 Có Khoản phải trả $5.000",
+            "Nợ Hàng tồn kho $5.000 Có Giá vốn hàng bán $5.000",
+            "Nợ Hàng mua $5.000 Có Giá vốn hàng bán $5.000",
+            "Nợ Hàng mua $5.000 Có Khoản phải trả $5.000",
+          ],
+          correct: "Nợ Hàng tồn kho $5.000 Có Khoản phải trả $5.000",
+        },
+        {
+          question:
+            "Số dư vào ngày 1/1 của tài khoản Dụng cụ nghệ thuật tại Lexel Company là $1.800, vào ngày 31/1 kết quả kiểm kê kho vật dụng cho thấy dụng cụ nghệ thuật còn tồn kho là $1.300. Bút toán điều chỉnh vào ngày 31/1 là:",
+          options: [
+            "Nợ Chi phí dụng cụ nghệ thuật là $500 Có Dụng cụ nghệ thuật $500",
+            "Nợ Dụng cụ nghệ thuật $500 Có Chi phí dụng cụ nghệ thuật là $500",
+            "Nợ Chi phí dụng cụ nghệ thuật là $1.300 Có Dụng cụ nghệ thuật $1.300",
+            "Nợ Dụng cụ nghệ thuật $1.300 Có Chi phí dụng cụ nghệ thuật là $1.300",
+          ],
+          correct:
+            "Nợ Chi phí dụng cụ nghệ thuật là $500 Có Dụng cụ nghệ thuật $500",
+        },
+        {
+          question: "Hàng dự trữ chờ bán:",
+          options: [
+            "Là tổng cộng hàng tồn kho đầu kỳ với hàng mua thuần trong kỳ",
+            "Là số hàng tồn kho đầu kỳ + hàng mua trong kỳ",
+            "Là số hàng tồn kho cuối kỳ",
+            "Là số hàng tồn kho đầu kỳ",
+          ],
+          correct:
+            "Là tổng cộng hàng tồn kho đầu kỳ với hàng mua thuần trong kỳ",
+        },
+        {
+          question:
+            "Trong tháng 08, công ty Bunica có doanh thu là $30,000. Các chi phí của công ty là: Giá vốn hàng bán là $12,000 và chi phí hoạt động là $2,000. Công ty cũng có một khoản doanh thu từ việc cho thuê là $500 và khoản thu nhập từ việc bán xe tải là $1,000.",
+          options: ["$17,500", "$18,000", "$16,500", "$16,000"],
+          correct: "$17,500",
+        },
+        {
+          question:
+            "Công ty Sammathy Co, kế toán hàng tồn kho theo phương pháp kê khai thường xuyên xuất kho theo phương pháp nhập trước xuất trước và trị giá xuất kho chiếm 50% trị giá hàng bán có các nghiệp vụ kinh tế phát sinh như sau: Thanh toán tiền mặt cho công ty Anzin Supply House số hàng mua chịu trị giá $6.000.",
+          options: [
+            "Nợ TK Phải trả người bán: $6.000 Có TK Tiền mặt: $6.000",
+            "Nợ TK Phải trả người bán: $6.000 Có TK Chiết khấu mua hàng: $120 Có TK Tiền mặt: $5.880",
+            "Nợ TK Phải trả người bán: $6.000 Có TK Chiết khấu bán hàng: $120 Có TK Tiền mặt: $5.880",
+            "Nợ TK Phải trả người bán: $5.880 Có TK Tiền mặt: $5.880",
+          ],
+          correct: "Nợ TK Phải trả người bán: $6.000 Có TK Tiền mặt: $6.000",
+        },
+        {
+          question:
+            "Công ty Sammathy Co, kế toán hàng tồn kho theo phương pháp kê khai thường xuyên xuất kho theo phương pháp nhập trước xuất trước và trị giá xuất kho chiếm 50% trị giá hàng bán có các nghiệp vụ kinh tế phát sinh như sau: Bán hàng thu tiền mặt trị giá $10.000.",
+          options: [
+            "Nợ TK Giá vốn hàng bán: $5.000 Có TK Hàng hóa: $5.000 Nợ TK Tiền mặt: $10.000 Có TK Doanh thu bán hàng: $10.000",
+            "Nợ TK Tiền mặt: $10.000 Có TK Doanh thu bán hàng: $10.000",
+            "Nợ TK Giá vốn hàng bán: $10.000 Có TK Doanh thu bán hàng: $10.000 Nợ TK Tiền mặt: $10.000 Có TK Hàng hóa: $10.000",
+            "Nợ TK Giá vốn hàng bán: $10.000 Có TK Hàng hóa: $10.000 Nợ TK Tiền mặt: $10.000 Có TK Doanh thu bán hàng: $10.000",
+          ],
+          correct:
+            "Nợ TK Giá vốn hàng bán: $5.000 Có TK Hàng hóa: $5.000 Nợ TK Tiền mặt: $10.000 Có TK Doanh thu bán hàng: $10.000",
+        },
+        {
+          question:
+            "Bán hàng vào ngày 1/6 giá trị hàng $200. điều kiện 2/10, n/30, sau đó nhận hàng bán trả lại là $50 vào ngày 7/6. Số tiền nhận được từ việc thanh toán toàn bộ nợ của khách hàng vào ngày 9/6 sẽ là:",
+          options: ["$147", "$196", "$200", "$150"],
+          correct: "$147",
+        },
+        {
+          question: "Thu nhập thuần là kết quả:",
+          options: [
+            "Lãi gộp từ việc bán hàng lớn hơn chi phí hoạt động",
+            "Doanh thu lớn hơn chi phí hoạt động",
+            "Doanh thu lớn hơn giá vốn hàng bán",
+            "Giá vốn hàng bán lớn hơn chi phí hoạt động",
+          ],
+          correct: "Lãi gộp từ việc bán hàng lớn hơn chi phí hoạt động",
+        },
+        {
+          question:
+            "Bút toán ghi chép việc thanh toán trong thời hạn được hưởng chiết khấu của việc mua hàng trị giá $1,000 theo điều kiện 2/10, n/30 và có trả lại $300 hàng mua thì sẽ ghi bên có của TK Tiền số tiền là:",
+          options: ["$686", "$680", "$700", "$980"],
+          correct: "$686",
+        },
+        {
+          question:
+            "Tại công ty Spring Co có nghiệp vụ phát sinh “Xuất kho lô hàng trị giá $100.000, giá bán $160.000 khách hàng thanh toán 50% bằng tiền mặt, 50% còn lại chưa thanh toán”. Kế toán ghi:",
+          options: [
+            "Nợ TK Giá vốn hàng bán: $100.000 Có TK Hàng hóa: $100.000 Nợ TK Tiền mặt: $80.000 Nợ Phải thu khách hàng: $80.000 Có TK Doanh thu bán hàng: $160.000",
+            "Nợ TK Giá vốn hàng bán: $100.000 Có TK Hàng hóa: $100.000 Nợ TK Tiền mặt: $80.000 Có TK Doanh thu bán hàng: $80.000",
+            "Nợ TK Giá vốn hàng bán: $100.000 Có TK Hàng hóa: $100.000 Nợ Phải thu khách hàng: $80.000 Có TK Doanh thu bán hàng: $80.000",
+            "Nợ TK Giá vốn hàng bán: $100.000 Có TK Hàng hóa: $100.000 Nợ TK Tiền mặt: $80.000 Nợ Phải trả khách hàng: $80.000 Có TK Doanh thu bán hàng: $160.000",
+          ],
+          correct:
+            "Nợ TK Giá vốn hàng bán: $100.000 Có TK Hàng hóa: $100.000 Nợ TK Tiền mặt: $80.000 Nợ Phải thu khách hàng: $80.000 Có TK Doanh thu bán hàng: $160.000",
+        },
+        {
+          question:
+            "Tại công ty Spring Co có nghiệp vụ phát sinh “Trả nợ vay ngắn hạn ngân hàng $50.000 bằng tiền gửi ngân hàng”. Kế toán ghi:",
+          options: [
+            "Nợ TK Vay ngắn hạn: $50.000 Có TK Tiền gửi ngân hàng: $50.000",
+            "Nợ TK Tiền gửi ngân hàng: $50.000 Có TK Vay ngắn hạn: $50.000",
+            "Nợ TK Vay ngắn hạn: $50.000 Có TK Trả nợ vay: $50.000",
+            "Nợ TK Trả nợ vay: $50.000 Có TK Tiền gửi ngân hàng: $50.000",
+          ],
+          correct:
+            "Nợ TK Vay ngắn hạn: $50.000 Có TK Tiền gửi ngân hàng: $50.000",
+        },
+        {
+          question:
+            "Tại công ty Spring Co có nghiệp vụ phát sinh “Chi trả lãi vay $3.000 bằng tiền mặt”. Kế toán ghi:",
+          options: [
+            "Nợ TK Chi phí lãi vay: $3.000 Có TK Tiền mặt: $3.000",
+            "Nợ TK Chi phí lãi vay: $3.000 Có TK Trả nợ vay: $3.000",
+            "Nợ TK Trả nợ vay: $3.000 Có TK Tiền mặt: $3.000",
+            "Nợ TK Trả nợ vay: $3.000 Có TK Tiền gửi ngân hàng: $3.000",
+          ],
+          correct: "Nợ TK Chi phí lãi vay: $3.000 Có TK Tiền mặt: $3.000",
+        },
+        {
+          question: "Khi doanh nghiệp thu một khoản nợ phải thu:",
+          options: [
+            "Tăng tài sản và giảm tài sản",
+            "Giảm tài sản và giảm vốn cổ phần",
+            "Tăng tài sản và tăng vốn cổ phần",
+            "Giảm tài sản và tăng nợ phải trả",
+          ],
+          correct: "Tăng tài sản và giảm tài sản",
+        },
+        {
+          question:
+            "Một công ty thuê văn phòng làm việc sẽ không lập bút toán có tài khoản nào cho việc thuê?",
+          options: [
+            "Tiền thuê nhận trước",
+            "Tiền thuê trả trước",
+            "Tiền thuê phải trả",
+            "Chi phí tiền thuê",
+          ],
+          correct: "Tiền thuê nhận trước",
+        },
+        {
+          question:
+            "Suhoza Company chấp nhận một khoản trả trước $20 cho dịch vụ sẽ cung cấp trong năm tới. Kế toán ghi nhận:",
+          options: [
+            "Có TK doanh thu nhận trước",
+            "Có TK doanh thu dịch vụ",
+            "Nợ TK Khoản phải thu",
+            "Có TK Tiền",
+          ],
+          correct: "Có TK doanh thu nhận trước",
+        },
+        {
+          question:
+            "Bước nào sau đây không nằm trong các bước lập bảng cân đổi thử:",
+          options: [
+            "Liệt kê tài khoản theo thứ tự a,b,c",
+            "Liệt kê số dư của tài khoản từ sổ tài khoản, dư nợ và dư có được liệt kê vào bên trái và bên phải",
+            "Cộng các cột",
+            "Đối chiếu sổ tổng cộng mỗi cột",
+          ],
+          correct: "Liệt kê tài khoản theo thứ tự a,b,c",
+        },
+        {
+          question: "Theo kế toán Mỹ, tài khoản rút vốn là:",
+          options: [
+            "Tài khoản nguồn vốn",
+            "Tài khoản điều chỉnh giảm tài sản",
+            "Tài khoản tài sản",
+            "Tài khoản điều chỉnh giảm nguồn vốn",
+          ],
+          correct: "Tài khoản điều chỉnh giảm nguồn vốn",
+        },
+        {
+          question: "Theo kế toán Mỹ, tài khoản hao mòn lũy kế là:",
+          options: [
+            "Tài khoản tài sản",
+            "Tài khoản điều chỉnh giảm nguồn vốn",
+            "Tài khoản điều chỉnh giảm tài sản",
+            "Tài khoản nguồn vốn",
+          ],
+          correct: "Tài khoản điều chỉnh giảm tài sản",
+        },
+        {
+          question: "Ủy ban chuẩn mực kế toán tài chính được ký hiệu là?",
+          options: ["SFASS", "GAAP", "FASB", "AAA"],
+          correct: "FASB",
+        },
+        {
+          question:
+            "Thông tin chi tiết về các chính sách kế toán của công ty phải được trình bày trên thuyết minh báo cáo tài chính là tuân thủ nguyên tắc kế toán nào sau đây?",
+          options: ["Trọng yếu", "Phù hợp", "Thận trọng", "Thông tin đầy đủ"],
+          correct: "Thông tin đầy đủ",
+        },
+        {
+          question: "Nội dung của báo cáo thu nhập là chi tiết hóa đẳng thức:",
+          options: [
+            "Tài sản = Nợ phải trả + Vốn chủ sở hữu",
+            "Lợi nhuận = Doanh thu – Chi phí",
+            "Tài sản = Nợ phải trả + Vốn góp + Lợi nhuận giữ lại",
+            "Tài sản = Nợ phải trả + Vốn góp + Doanh thu – Chi phí",
+          ],
+          correct: "Lợi nhuận = Doanh thu – Chi phí",
+        },
+        {
+          question:
+            "Giả sử đầu năm, tổng tài sản của công ty Univer Company là 800.000 USD và tổng nợ phải trả là 500.000 USD. Nếu trong năm tài sản giảm 200.000 USD và vốn chủ sở hữu tăng 100.000 USD thì tổng nợ phải trả cuối năm là bao nhiêu?",
+          options: ["620.000", "150.000", "500.000", "200.000"],
+          correct: "200.000",
+        },
+        {
+          question: "Theo kế toán quốc tế, tài khoản thường xuyên:",
+          options: [
+            "Là những tài khoản mà số dư của nó sẽ bị xóa đi bằng những bút toán khóa sổ",
+            "Là những tài khoản không có số dư",
+            "Là những tài khoản số dư cuối mỗi kỳ của nó sẽ được giữ lại làm số dư cho đầu kỳ sau",
+            "Là những tài khoản liên quan đến báo cáo thu nhập",
+          ],
+          correct: "Là những tài khoản liên quan đến báo cáo thu nhập",
+        },
+        {
+          question:
+            "Theo kế toán quốc tế, tài khoản thường xuyên có liên quan đến:",
+          options: [
+            "Báo cáo vốn chủ sở hữu",
+            "Báo cáo thu nhập",
+            "Bảng cân đối tài sản",
+            "Báo cáo lưu chuyển tiền tệ",
+          ],
+          correct: "Báo cáo thu nhập",
+        },
+        {
+          question: "Theo kế toán quốc tế, tài khoản tạm thời:",
+          options: [
+            "Là những tài khoản không có số dư",
+            "Là những tài khoản liên quan đến báo cáo thu nhập",
+            "Là những tài khoản số dư cuối mỗi kỳ của nó sẽ được giữ lại làm số dư cho đầu kỳ sau",
+            "Là những tài khoản mà số dư của nó sẽ bị xóa đi bằng những bút toán khóa sổ vào cuối mỗi kỳ kế toán để chuẩn bị cho việc ghi chép trong kỳ kế toán mới",
+          ],
+          correct:
+            "Là những tài khoản mà số dư của nó sẽ bị xóa đi bằng những bút toán khóa sổ vào cuối mỗi kỳ kế toán để chuẩn bị cho việc ghi chép trong kỳ kế toán mới",
+        },
+        {
+          question:
+            "Nếu một doanh nghiệp có nợ phải trả là 19.000 và nguồn vốn chủ sở hữu là 57.000 thì tài sản của doanh nghiệp là: (ĐVT: 1.000 USD)",
+          options: ["19.000", "57.000", "38.000", "76.000"],
+          correct: "76.000",
+        },
+        {
+          question:
+            "Bảng cân đối kế toán ngày 1/1/200x của doanh nghiệp A gồm: Tiền mặt 300, nợ người bán 100, người mua nợ 200 và vốn chủ sở hữu. Sau nghiệp vụ kinh tế phát sinh “vay ngắn hạn ngân hàng để mua hàng hóa 100” thì vốn chủ sở hữu và tổng tài sản sẽ là: (ĐVT: 1.000 USD)",
+          options: ["500 và 500", "400 và 600", "500 và 600", "400 và 500"],
+          correct: "400 và 600",
+        },
+        {
+          question:
+            "Trường hợp nào sau đây không làm thay đổi số tổng cộng cuối cùng của Bảng cân đối kế toán?",
+          options: [
+            "Vay ngắn hạn ngân hàng để trả nợ",
+            "Xuất quỹ tiền mặt để trả nợ người bán",
+            "Xuất quỹ tiền mặt trả nợ vay ngân hàng 700 USD",
+            "Mua hàng hóa chưa thanh toán 200 USD",
+          ],
+          correct: "Xuất quỹ tiền mặt để trả nợ người bán",
+        },
+        {
+          question:
+            "Trong các trường hợp dưới đây, trường hợp nào chưa được ghi nhận doanh thu?",
+          options: [
+            "Khách hàng chưa nhận hàng nhưng thanh toán trước cho doanh nghiệp bằng tiền mặt.",
+            "Khách hàng đã nhận hàng và thanh toán cho doanh nghiệp bằng tiền mặt.",
+            "Khách hàng đã nhận hàng và đã thanh toán cho doanh nghiệp bằng chuyển khoản.",
+            "Khách hàng đã nhận hàng, đã chấp nhận thanh toán nhưng chưa thanh toán cho doanh nghiệp.",
+          ],
+          correct:
+            "Khách hàng chưa nhận hàng nhưng thanh toán trước cho doanh nghiệp bằng tiền mặt.",
+        },
+        {
+          question:
+            "Trong bảng tính (worksheet), bảng cân đối thử, tài khoản Chi phí:",
+          options: [
+            "Có số dư 2 bên Nợ, Có",
+            "Có số dư bên Có",
+            "Có số dư bên Nợ",
+            "Có số dư vào lúc đầu kỳ",
+          ],
+          correct: "Có số dư bên Nợ",
+        },
+        {
+          question:
+            "Trong bảng tính (worksheet), bảng cân đối thử, tài khoản Doanh thu:",
+          options: [
+            "Có số dư 2 bên Nợ, Có",
+            "Có số dư bên Nợ",
+            "Có số dư bên Có",
+            "Có số dư vào lúc đầu kỳ",
+          ],
+          correct: "Có số dư bên Có",
+        },
+        {
+          question:
+            "Hình thức doanh nghiệp được thành lập theo luật, có nhiều chủ sở hữu – cổ đông – góp vốn bằng hình thức cổ phần. Cổ đông chịu trách nhiệm hữu hạn trong phạm vi vốn góp của mình, ở Mỹ được gọi là:",
+          options: [
+            "Công ty trách nhiệm hữu hạn",
+            "Công ty hợp danh",
+            "Doanh nghiệp tư nhân",
+            "Công ty cổ phần",
+          ],
+          correct: "Công ty cổ phần",
+        },
+        {
+          question:
+            "Doanh nghiệp chịu trách nhiệm vô hạn đối với tất cả các khoản nợ của doanh nghiệp, ở Mỹ được gọi là:",
+          options: [
+            "Công ty hợp danh",
+            "Công ty trách nhiệm hữu hạn",
+            "Công ty cổ phần",
+            "Doanh nghiệp tư nhân",
+          ],
+          correct: "Doanh nghiệp tư nhân",
+        },
+        {
+          question: "Thu một khoản nợ phải thu:",
+          options: [
+            "Tăng tài sản và giảm tài sản",
+            "Tăng tài sản và tăng vốn cổ phần",
+            "Giảm tài sản và tăng nợ phải trả",
+            "Giảm tài sản và giảm vốn cổ phần",
+          ],
+          correct: "Tăng tài sản và giảm tài sản",
+        },
+        {
+          question: "Vấn đề ghi nhận:",
+          options: [
+            "Phân loại nghiệp vụ như thế nào",
+            "Ghi chép nghiệp vụ ở đâu",
+            "Ghi chép nghiệp vụ khi nào",
+            "Xác định thước đo giá trị cho nghiệp vụ",
+          ],
+          correct: "Ghi chép nghiệp vụ khi nào",
+        },
+        {
+          question:
+            "Suhoza Company chấp nhận một khoản trả trước $200 cho dịch vụ mà Suhoza sẽ cung cấp trong năm tới. Bút toán ghi chép nghiệp vụ này của Suhoza sẽ bao gồm:",
+          options: [
+            "Ghi nợ Khoản phải thu",
+            "Ghi có Doanh thu dịch vụ nhận trước",
+            "Ghi có Doanh thu dịch vụ",
+            "Ghi có Tiền",
+          ],
+          correct: "Ghi có Doanh thu dịch vụ nhận trước",
+        },
+        {
+          question:
+            "Theo thời gian, khấu hao lũy kế và giá trị còn lại của tài sản sẽ:",
+          options: [
+            "Tăng dần và giảm dần tương ứng",
+            "Đều tăng dần",
+            "Giảm dần và tăng dần tương ứng",
+            "Đều giảm dần",
+          ],
+          correct: "Tăng dần và giảm dần tương ứng",
+        },
+        {
+          question:
+            "Doanh thu cho thuê là $15.000, tổng chi phí là $45.000 và lãi thuần là $55.000. Vậy khoản doanh thu khác là bao nhiêu?",
+          options: ["$85.000", "$65.000", "$75.000", "Không xác định"],
+          correct: "$85.000",
+        },
+        {
+          question:
+            "Tài khoản nào sau đây không được khóa trong quá trình khóa sổ?",
+          options: [
+            "Chi phí tiền thuê",
+            "Thu nhập tiền lãi",
+            "Lợi nhuận giữ lại",
+            "Xác định KQKD",
+          ],
+          correct: "Lợi nhuận giữ lại",
+        },
+        {
+          question:
+            "Công ty Fenwick có bán một lô hàng cho khách hàng trị giá $8.000 với điều khoản thanh toán 4/15, n/40 vào ngày 07/03. Sau đó, ngày 08/03 công ty nhận được $500 tiền hàng hóa do khách hàng trả lại vì lỗi kỹ thuật sản phẩm. Ngày 20/03 công ty nhận được thanh toán 40% của khách hàng. Ngày 27/03 khách hàng đã thanh toán hết phần còn lại. (Biết rằng công ty áp dụng hệ thống kiểm kê định kỳ) Bút toán nhật ký tại ngày 20/03 được ghi:",
+          options: [
+            "Nợ Tiền mặt: 2.880   Nợ Chiết khấu bán hàng: 120   Có Khoản phải thu: 3.000",
+            "Nợ Khoản phải thu: 3.000   Có Doanh thu bán hàng: 3.000",
+            "Nợ Tiền mặt: 3.000   Có Khoản phải thu: 3.000",
+            "Nợ Khoản phải thu: 2.880   Nợ Chiết khấu bán hàng: 120   Có Doanh thu bán hàng: 3.000",
+          ],
+          correct:
+            "Nợ Tiền mặt: 2.880   Nợ Chiết khấu bán hàng: 120   Có Khoản phải thu: 3.000",
+        },
+      ];
+
+      let selectedQuestions = [];
+
+      function shuffleArray(array) {
+        return array.sort(() => Math.random() - 0.5);
+      }
+
+      function renderQuestions() {
+        const quizForm = document.getElementById("quizForm");
+        quizForm.innerHTML = "";
+
+        selectedQuestions = shuffleArray([...allQuestions]);
+        selectedQuestions.forEach((q, index) => {
+          const shuffledAnswers = shuffleArray([...q.options]); // Sửa từ q.answers thành q.options
+          const qDiv = document.createElement("div");
+          qDiv.classList.add("question");
+          qDiv.dataset.correct = q.correct;
+
+          const qTitle = document.createElement("h3");
+          qTitle.textContent = `Câu ${index + 1}: ${q.question}`;
+          qDiv.appendChild(qTitle);
+
+          const optsDiv = document.createElement("div");
+          optsDiv.classList.add("options");
+
+          shuffledAnswers.forEach((answer) => {
+            const label = document.createElement("label");
+            const input = document.createElement("input");
+            input.type = "radio";
+            input.name = `q${index}`;
+            input.value = answer;
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(" " + answer));
+            optsDiv.appendChild(label);
+          });
+
+          qDiv.appendChild(optsDiv);
+          quizForm.appendChild(qDiv);
+        });
+      }
+
+      function calculateScore() {
+        let score = 0;
+        const quizForm = document.getElementById("quizForm");
+        const questionsDivs = quizForm.querySelectorAll(".question");
+
+        questionsDivs.forEach((qDiv, index) => {
+          const selected = qDiv.querySelector(
+            `input[name="q${index}"]:checked`
+          );
+          const correctAnswer = qDiv.dataset.correct;
+
+          const labels = qDiv.querySelectorAll("label");
+          labels.forEach((label) => {
+            const input = label.querySelector("input");
+            if (input.value === correctAnswer) {
+              label.classList.add("correct");
+            }
+            if (input.checked && input.value !== correctAnswer) {
+              label.classList.add("incorrect");
+            }
+          });
+
+          if (!selected || selected.value !== correctAnswer) {
+            const explain = document.createElement("div");
+            explain.className = "correct-answer";
+            explain.textContent =
+              "✔ Sai ròi á công túa đáp án đúng phải là: " + correctAnswer;
+            qDiv.appendChild(explain);
+          }
+
+          if (selected && selected.value === correctAnswer) {
+            score++;
+          }
+        });
+
+        document.getElementById(
+          "score"
+        ).textContent = `✅ Bạn đúng ${score}/${selectedQuestions.length} câu`;
+        document.getElementById("submitBtn").disabled = true;
+      }
+
+      document.getElementById("startBtn").addEventListener("click", () => {
+        renderQuestions();
+        document.getElementById("submitBtn").style.display = "block";
+        document.getElementById("startBtn").style.display = "none";
+        document.getElementById("score").textContent = "";
+      });
+
+      document.getElementById("submitBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        calculateScore();
+      });
+    </script>
+  </body>
+</html>
